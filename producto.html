@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abuela María | Productos</title>
+  <style>
+    :root { --green:#b98272; --green-dark:#a86f60; --cream:#fff8f1; --pink:#f2cfd2; --sage:#f0dfd2; --ink:#463832; --muted:#7d6a62; --white:#fff; --line:#eedfd6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--cream); color: var(--ink); }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    .site-header { background: linear-gradient(110deg,#f4e5d8 0%,#fff5ef 52%,#f5dfe2 100%); border-bottom: 2px solid #e7c6bd; box-shadow: 0 4px 14px rgba(60, 48, 42, 0.08); }
+    .site-header-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 0; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo { width: 82px; height: 82px; border-radius: 50%; border: 3px solid var(--pink); }
+    .brand-name { font-family: Georgia, serif; font-size: 1.25rem; font-weight: 700; color: var(--green-dark); }
+    .main-nav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .nav-link { padding: 10px 16px; background: var(--green); color: white; border-radius: 12px; font-weight: 700; }
+    .nav-link.secondary { background: transparent; border: 1px solid var(--green); color: var(--green-dark); }
+    .page-hero { padding: 36px 0 24px; }
+    .hero-card { background: linear-gradient(135deg,#fff0ee 0%,#fffaf5 100%); border: 2px solid #e7c6bd; border-radius: 26px; padding: 24px 28px; }
+    .eyebrow { margin: 0 0 10px; color: var(--green-dark); letter-spacing: 1.8px; font-size: .76rem; font-weight: 700; text-transform: uppercase; }
+    h1 { margin: 0; font-family: Georgia, serif; font-size: clamp(2.1rem, 3vw, 3.2rem); }
+    .describe { margin: 12px 0 0; color: var(--muted); font-size: 1.04rem; }
+    .new-search-button { display: inline-flex; align-items: center; justify-content: center; margin-top: 14px; padding: 10px 15px; border: 1px solid var(--green); border-radius: 8px; background: var(--sage); color: var(--ink); font-weight: 700; }
+    .new-search-button:hover { background: #e7d5c8; }
+    .new-search-button[hidden] { display: none; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 18px 0 54px; }
+    .product-grid.single-product { grid-template-columns: minmax(0, 720px); justify-content: center; }
+    .single-product .recipe-art { flex-basis: 360px; height: 360px; }
+    .single-product .recipe-body { padding: 24px 28px 26px; }
+    .single-product .recipe-body h3 { font-size: 2rem; }
+    .recipe-card { display: flex; flex-direction: column; background: white; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 8px 20px rgba(61, 47, 43, 0.05); }
+    .recipe-art { flex: 0 0 220px; height: 220px; display: grid; place-items: center; background: linear-gradient(135deg, #f7e8d6, #fcebe6); overflow: hidden; }
+    .recipe-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .recipe-art.recipe-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 3px; }
+    .recipe-art.recipe-gallery img:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .recipe-art.pending { color: var(--muted); font-size: .9rem; }
+    .subcategory-picker { display: flex; align-items: center; gap: 12px; margin-top: 22px; color: var(--green-dark); font-weight: 700; }
+    .subcategory-picker select { min-width: 220px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--ink); font: inherit; }
+    .recipe-body { display: flex; flex: 1; flex-direction: column; padding: 18px 18px 20px; }
+    .pill { display: inline-block; align-self: flex-start; width: fit-content; max-width: 100%; padding: 5px 9px; background: var(--sage); color: var(--green-dark); border-radius: 999px; font-size: .72rem; font-weight: 700; }
+    .recipe-body h3 { margin: 12px 0 8px; font-family: Georgia, serif; font-size: 1.65rem; }
+    .recipe-body p { margin: 0; color: var(--muted); line-height: 1.5; }
+    .recipe-meta { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .77rem; color: var(--muted); display: flex; justify-content: space-between; }
+    .whatsapp-product { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: auto; padding: 11px 14px; border-radius: 8px; background: #00bf63; color: white; font-weight: 700; text-align: center; transition: background .18s, transform .18s; }
+    .single-product .whatsapp-product { width: fit-content; max-width: 100%; align-self: center; padding-inline: 22px; }
+    .whatsapp-product:hover { background: #00a858; transform: translateY(-1px); }
+    .whatsapp-product svg { width: 19px; height: 19px; flex: 0 0 19px; }
+    .product-title-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    .whatsapp-action { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; padding: 13px 16px; border-radius: 8px; background: #00bf63; color: white; font-size: 14px; font-weight: 700; white-space: nowrap; box-shadow: 0 3px 10px rgba(27, 57, 43, .12); transition: background .18s, transform .18s; }
+    .whatsapp-action:hover { background: #00a858; transform: translateY(-1px); }
+    .whatsapp-action svg { width: 21px; height: 21px; flex: 0 0 21px; }
+    .empty { background: white; border: 1px solid var(--line); border-radius: 16px; padding: 32px; text-align: center; color: var(--muted); }
+    .back-link { display: inline-block; margin: 18px auto 0; background: var(--green-dark); color: white; padding: 12px 18px; border-radius: 999px; font-weight: 700; }
+    .catalog-return { margin-top: 14px; }
+    .catalog-return .back-link { margin: 0; }
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .product-grid.single-product { grid-template-columns: minmax(0, 640px); } }
+    @media (max-width: 540px) { .site-header-inner { flex-direction: column; align-items: flex-start; } .main-nav { width: 100%; } .product-grid { grid-template-columns: 1fr; } .product-grid.single-product { grid-template-columns: 1fr; } .single-product .recipe-art { flex-basis: 270px; height: 270px; } .single-product .recipe-body { padding: 20px; } .subcategory-picker { align-items: stretch; flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header-inner">
+      <div class="brand">
+        <img class="brand-logo" src="LOGO_TOSTADO.png" alt="Abuela María" />
+        <div class="brand-name">Abuela María</div>
+      </div>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a class="nav-link secondary" href="index.html#inicio">Inicio</a>
+        <a class="nav-link secondary" href="index.html#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-hero">
+    <div class="hero-card">
+      <p class="eyebrow">Productos</p>
+      <div class="product-title-row">
+        <h1 id="pageTitle">Nuestros productos</h1>
+        <a class="whatsapp-action" href="https://wa.me/541132322710?text=Hola%2C%20quiero%20consultar%20precios%20o%20hacer%20un%20pedido." target="_blank" rel="noopener noreferrer" aria-label="Consultar precios o hacer un pedido por WhatsApp"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 .8A15.1 15.1 0 0 0 3.1 23.8L1 31l7.4-1.9A15.1 15.1 0 1 0 16 .8Zm0 27.5c-2.3 0-4.5-.6-6.4-1.8l-.5-.3-4.4 1.1 1.2-4.3-.3-.5A12.4 12.4 0 1 1 16 28.3Zm6.8-9.3c-.4-.2-2.3-1.1-2.7-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1.1-2-2.4-2.2-2.8-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.3 0-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.8c-.3 0-.7.1-1.1.5-.4.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.8 6 .9.4 1.6.6 2.1.7.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5Z"></path></svg><span>Pedidos y Consultas</span></a>
+      </div>
+      <p id="pageDescription" class="describe">Seleccioná una categoría para ver más opciones.</p>
+      <a id="newSearchButton" class="new-search-button" href="index.html#inicio" hidden>Nueva búsqueda</a>
+      <div class="catalog-return">
+        <a class="back-link" href="index.html#recetario">Volver al catálogo</a>
+      </div>
+      <label class="subcategory-picker">Elegí un sabor
+        <select id="subcategoryPicker" aria-label="Filtrar por sabor"></select>
+      </label>
+    </div>
+    <div id="productGrid" class="product-grid" aria-live="polite"></div>
+    <div style="text-align:center;">
+      <a class="back-link" href="index.html#recetario">Volver al catálogo</a>
+    </div>
+  </main>
+
+  <script>
+    const recipes = [
+      { name: 'Budín de naranja', category: 'Budines', subcategory: 'Naranja', images: ['BUDINES/BUDIN NARANJA.jpg'] },
+      { name: 'Budín de frutos secos', category: 'Budines', subcategory: 'Con frutos secos', images: ['BUDINES/BUDIN FRUTOS SECOS.jpg'] },
+      { name: 'Budín de vainilla', category: 'Budines', subcategory: 'Vainilla', images: ['BUDINES/BUDIN DE VAINILLA.jpg'] },
+      { name: 'Budín de limón', category: 'Budines', subcategory: 'Limón', images: ['BUDINES/BUDIN DE LIMON.jpg'] },
+      { name: 'Budín glaseado', category: 'Budines', subcategory: 'Glaseado', images: ['BUDINES/BUDIN GLASEADO.jpg'] },
+      { name: 'Budín de dulce de leche', category: 'Budines', subcategory: 'Dulce de leche', images: ['BUDINES/BUDIN DE DULCE DE LECHE.jpg'] },
+      { name: 'Budín glaseado de dulce de leche', category: 'Budines', subcategory: 'Glaseado de dulce de leche', images: ['BUDINES/BUDIN GLASEADO ddl.jpg'] },
+      { name: 'Budín de chocolate y chips', category: 'Budines', subcategory: 'Chocolate y chips', images: ['BUDINES/BUDIN CHOCOLATE Y CHIPS.jpg'] },
+      { name: 'Budín inglés', category: 'Budines', subcategory: 'Inglés', images: ['BUDINES/BUDIN INGLES.jpg'] },
+      { name: 'Budines variados', category: 'Budines', subcategory: 'Variados', images: ['BUDINES/BUDINES VARIOS.jpg'] },
+      { name: 'Tarta de durazno', category: 'Tartas', subcategory: 'Durazno', images: ['TARTAS/TARTA DE DURAZNO.jpg'] },
+      { name: 'Tarta de frutilla', category: 'Tartas', subcategory: 'Frutilla', images: ['TARTAS/TARTA DE FRESA.jpg'] },
+      { name: 'Tarta de dulce de leche', category: 'Tartas', subcategory: 'Dulce de leche', images: ['TARTAS/TARTA DULCE DE LECHE.jpg'] },
+      { name: 'Tartas por porción', category: 'Tartas', subcategory: 'Porciones', images: ['TARTAS/TARTAS PORCIONES.jpg'] },
+      { name: 'Pasta Flora', category: 'Tartas', subcategory: 'Pasta Flora', images: ['PASTAFLORA/PASTAFLORA.jpg'] },
+      { name: 'Cookies de vainilla', category: 'Cookies', subcategory: 'Vainilla', images: ['COOKIES/COOKIES VAINILLA 2.jpg'] },
+      { name: 'Cookies de chocolate', category: 'Cookies', subcategory: 'Chocolate', images: ['COOKIES/COOKIES CHOCOLATE.jpg'] },
+      { name: 'Cookies con granas', category: 'Cookies', subcategory: 'Con granas', images: ['COOKIES/COOKIES CON GRANAS-.jpg'] },
+      { name: 'Polvorones', category: 'Cookies', subcategory: 'Polvorones', images: ['COOKIES/POLVORONES.jpg'] },
+      { name: 'Brownies', category: 'Brownies', subcategory: 'Brownies', images: ['BROWNIE/BROWNIE.jpg'] },
+      { name: 'Magdalenas', category: 'Magdalenas', subcategory: 'Magdalenas', images: ['MAGDALENAS/Magdalenas.jpg'] },
+      { name: 'Pan de molde', category: 'Panificados', subcategory: 'Pan de molde', images: ['PAN DE MOLDE/PAN DE MOLDE.jpg', 'PAN DE MOLDE/PAN DE MOLDE 2.jpg', 'PAN DE MOLDE/PAN DE MOLDE FETAS.jpg', 'PAN DE MOLDE/PAN DE MOLDE FETAS 2.jpg', 'PAN DE MOLDE/PAN DE MOLDE FETAS 3.jpg'] },
+      { name: 'Pan Chip', category: 'Panificados', subcategory: 'Pan Chip', images: ['PAN CHIP/PAN CHIP.jpg'] },
+      { name: 'Fosforitos', category: 'Fosforitos', subcategory: 'Fosforitos', images: ['FOSFORITOS/FOSFORITOS.jpg'] },
+      { name: 'Galletas marineras', category: 'Galletas Marineras', subcategory: 'Galletas Marineras', images: ['MARINERAS/GALLETITTAS MARINERAS.jpg'] },
+      { name: 'Torta casera de merengue', category: 'Tortas', subcategory: 'Torta casera de merengue', images: ['TORTAS/TORTA CASERA DE MERENGUE.jpg'] },
+      { name: 'Torta de dulce de leche y merengue', category: 'Tortas', subcategory: 'Torta de dulce de leche y merengue', images: ['TORTAS/Torta DDL y merengue.jpg'] }
+    ];
+
+    const params = new URLSearchParams(window.location.search);
+    const selectedCategory = params.get('category') || '';
+    const selectedSubcategory = params.get('subcategory') || '';
+    const selectedName = params.get('name') || '';
+    const selectedQuery = params.get('q') || '';
+    const normalizeText = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es');
+    const normalizedQuery = normalizeText(selectedQuery.trim());
+
+    const pageTitle = document.getElementById('pageTitle');
+    const pageDescription = document.getElementById('pageDescription');
+    const productGrid = document.getElementById('productGrid');
+    const subcategoryPicker = document.getElementById('subcategoryPicker');
+    const newSearchButton = document.getElementById('newSearchButton');
+
+    const availableSubcategories = [...new Set(recipes
+      .filter(item => !selectedCategory || item.category === selectedCategory)
+      .map(item => item.subcategory))];
+    subcategoryPicker.innerHTML = '<option value="">Todos los sabores</option>' + availableSubcategories
+      .map(subcategory => `<option value="${subcategory}">${subcategory}</option>`)
+      .join('');
+    subcategoryPicker.value = selectedSubcategory;
+    subcategoryPicker.addEventListener('change', () => {
+      const nextParams = new URLSearchParams();
+      if (selectedCategory) nextParams.set('category', selectedCategory);
+      if (subcategoryPicker.value) nextParams.set('subcategory', subcategoryPicker.value);
+      window.location.href = `producto.html?${nextParams.toString()}`;
+    });
+
+    let filtered = recipes.filter(item => {
+      const categoryMatch = !selectedCategory || item.category === selectedCategory;
+      const subcategoryMatch = !selectedSubcategory || item.subcategory === selectedSubcategory;
+      const nameMatch = !selectedName || item.name.toLowerCase().includes(selectedName.toLowerCase());
+      const queryMatch = !normalizedQuery || [item.name, item.category, item.subcategory].some(value => normalizeText(value).includes(normalizedQuery));
+      return categoryMatch && subcategoryMatch && nameMatch && queryMatch;
+    });
+
+    if (!filtered.length && (selectedCategory || selectedSubcategory || selectedName)) {
+      filtered = recipes.filter(item => {
+        const categoryMatch = !selectedCategory || item.category.toLowerCase().includes(selectedCategory.toLowerCase());
+        const subcategoryMatch = !selectedSubcategory || item.subcategory.toLowerCase().includes(selectedSubcategory.toLowerCase());
+        const nameMatch = !selectedName || item.name.toLowerCase().includes(selectedName.toLowerCase());
+        const queryMatch = !normalizedQuery || [item.name, item.category, item.subcategory].some(value => normalizeText(value).includes(normalizedQuery));
+        return categoryMatch && subcategoryMatch && nameMatch && queryMatch;
+      });
+    }
+
+    productGrid.classList.toggle('single-product', filtered.length === 1 && Boolean(selectedSubcategory || selectedName));
+
+    if (selectedQuery) {
+      pageTitle.textContent = 'Resultados de búsqueda';
+      pageDescription.textContent = `Resultados para “${selectedQuery}”.`;
+      newSearchButton.hidden = false;
+    } else if (selectedCategory && !selectedSubcategory) {
+      pageTitle.textContent = selectedCategory;
+      pageDescription.textContent = `Mostrando todos los productos de ${selectedCategory}.`;
+    } else if (selectedCategory && selectedSubcategory) {
+      pageTitle.textContent = `${selectedCategory} · ${selectedSubcategory}`;
+      pageDescription.textContent = `Variedades disponibles en la categoría ${selectedCategory}.`;
+    } else if (selectedName) {
+      pageTitle.textContent = selectedName;
+      pageDescription.textContent = 'Detalle del producto solicitado.';
+    } else {
+      pageTitle.textContent = 'Nuestros productos';
+      pageDescription.textContent = 'Seleccioná una categoría para ver más opciones.';
+    }
+
+    if (!filtered.length) {
+      productGrid.innerHTML = '<div class="empty">No encontramos productos con esos filtros. Volvé al catálogo para seguir explorando.</div>';
+    } else {
+      productGrid.innerHTML = filtered.map(item => {
+        const gallery = item.images.length
+          ? `<div class="recipe-art ${item.images.length > 1 ? 'recipe-gallery' : ''}">${item.images.map(image => `<img src="${image}" alt="${item.name}" loading="lazy">`).join('')}</div>`
+          : '<div class="recipe-art pending">Foto pendiente</div>';
+        const whatsappUrl = `https://wa.me/541132322710?text=${encodeURIComponent(`Hola, quisiera consultar el precio y hacer un pedido de ${item.name}.` )}`;
+
+        return `
+          <article class="recipe-card">
+            ${gallery}
+            <div class="recipe-body">
+              <span class="pill">${item.category}</span>
+              <h3>${item.name}</h3>
+              <p>Producto artesanal sin TACC.</p>
+              <div class="recipe-meta">
+                <span>${item.subcategory || 'Especial'}</span>
+                <span>Sin TACC</span>
+              </div>
+              <a class="whatsapp-product" href="${whatsappUrl}" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 .8A15.1 15.1 0 0 0 3.1 23.8L1 31l7.4-1.9A15.1 15.1 0 1 0 16 .8Zm0 27.5c-2.3 0-4.5-.6-6.4-1.8l-.5-.3-4.4 1.1 1.2-4.3-.3-.5A12.4 12.4 0 1 1 16 28.3Zm6.8-9.3c-.4-.2-2.3-1.1-2.7-1.2-.4-.1-.6-.2-.9.2-.3.4-1 1.2-1.2 1.4-.2.3-.5.3-.9.1-.4-.2-1.7-.6-3.2-2-1.2-1.1-2-2.4-2.2-2.8-.2-.4 0-.6.2-.8l.6-.7c.2-.2.3-.4.4-.6.1-.3 0-.5 0-.7-.1-.2-.9-2.1-1.2-2.9-.3-.8-.6-.7-.9-.7h-.8c-.3 0-.7.1-1.1.5-.4.4-1.4 1.3-1.4 3.2s1.4 3.7 1.6 4c.2.3 2.8 4.3 6.8 6 .9.4 1.6.6 2.1.7.9.3 1.8.2 2.4.1.7-.1 2.3-.9 2.6-1.8.3-.9.3-1.7.2-1.8-.1-.2-.4-.3-.8-.5Z"></path></svg>
+                Pedidos y Consultas
+              </a>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+  </script>
+</body>
+</html>
