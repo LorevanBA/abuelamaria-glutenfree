@@ -107,12 +107,12 @@
       { name: 'Budín glaseado de dulce de leche', category: 'Budines', subcategory: 'Glaseado de dulce de leche', images: ['BUDINES/BUDIN GLASEADO ddl.jpg'] },
       { name: 'Budín de chocolate y chips', category: 'Budines', subcategory: 'Chocolate y chips', images: ['BUDINES/BUDIN CHOCOLATE Y CHIPS.jpg'] },
       { name: 'Budín inglés', category: 'Budines', subcategory: 'Inglés', images: ['BUDINES/BUDIN INGLES.jpg'] },
-      { name: 'Budines variados', category: 'Budines', subcategory: 'Variados', images: ['BUDINES/BUDINES VARIOS.jpg'] },
+      { name: 'Budines variados', category: 'Budines', subcategory: 'Variados', images: [], emoji: '🧁', coverOnly: true },
       { name: 'Tarta de durazno', category: 'Tartas', subcategory: 'Durazno', images: ['TARTAS/TARTA DE DURAZNO.jpg'] },
       { name: 'Tarta de frutilla', category: 'Tartas', subcategory: 'Frutilla', images: ['TARTAS/TARTA DE FRESA.jpg'] },
       { name: 'Tarta de dulce de leche', category: 'Tartas', subcategory: 'Dulce de leche', images: ['TARTAS/TARTA DULCE DE LECHE.jpg'] },
       { name: 'Tartas por porción', category: 'Tartas', subcategory: 'Porciones', images: ['TARTAS/TARTAS PORCIONES.jpg'] },
-      { name: 'Pasta Flora', category: 'Tartas', subcategory: 'Pasta Flora', images: ['PASTAFLORA/PASTAFLORA.jpg'] },
+      { name: 'Pasta Flora', category: 'Tartas', subcategory: 'Pasta Flora', images: ['PASTAFLORA/PASTAFLORA.jpg'], emoji: '🥧', coverOnly: true, showImageOnSubcategory: true },
       { name: 'Cookies de vainilla', category: 'Cookies', subcategory: 'Vainilla', images: ['COOKIES/COOKIES VAINILLA 2.jpg'] },
       { name: 'Cookies de chocolate', category: 'Cookies', subcategory: 'Chocolate', images: ['COOKIES/COOKIES CHOCOLATE.jpg'] },
       { name: 'Cookies con granas', category: 'Cookies', subcategory: 'Con granas', images: ['COOKIES/COOKIES CON GRANAS-.jpg'] },
@@ -160,7 +160,8 @@
       const subcategoryMatch = !selectedSubcategory || item.subcategory === selectedSubcategory;
       const nameMatch = !selectedName || item.name.toLowerCase().includes(selectedName.toLowerCase());
       const queryMatch = !normalizedQuery || [item.name, item.category, item.subcategory].some(value => normalizeText(value).includes(normalizedQuery));
-      return categoryMatch && subcategoryMatch && nameMatch && queryMatch;
+      const coverOnlyMatch = !item.coverOnly || item.subcategory === selectedSubcategory || Boolean(selectedQuery) || Boolean(selectedName);
+      return categoryMatch && subcategoryMatch && nameMatch && queryMatch && coverOnlyMatch;
     });
 
     if (!filtered.length && (selectedCategory || selectedSubcategory || selectedName)) {
@@ -169,11 +170,12 @@
         const subcategoryMatch = !selectedSubcategory || item.subcategory.toLowerCase().includes(selectedSubcategory.toLowerCase());
         const nameMatch = !selectedName || item.name.toLowerCase().includes(selectedName.toLowerCase());
         const queryMatch = !normalizedQuery || [item.name, item.category, item.subcategory].some(value => normalizeText(value).includes(normalizedQuery));
-        return categoryMatch && subcategoryMatch && nameMatch && queryMatch;
+        const coverOnlyMatch = !item.coverOnly || item.subcategory === selectedSubcategory || Boolean(selectedQuery) || Boolean(selectedName);
+        return categoryMatch && subcategoryMatch && nameMatch && queryMatch && coverOnlyMatch;
       });
     }
 
-    productGrid.classList.toggle('single-product', filtered.length === 1 && Boolean(selectedSubcategory || selectedName));
+    productGrid.classList.toggle('single-product', filtered.length === 1);
 
     if (selectedQuery) {
       pageTitle.textContent = 'Resultados de búsqueda';
@@ -197,9 +199,12 @@
       productGrid.innerHTML = '<div class="empty">No encontramos productos con esos filtros. Volvé al catálogo para seguir explorando.</div>';
     } else {
       productGrid.innerHTML = filtered.map(item => {
-        const gallery = item.images.length
+        const showImages = !item.showImageOnSubcategory || selectedSubcategory === item.subcategory;
+        const gallery = showImages && item.images.length
           ? `<div class="recipe-art ${item.images.length > 1 ? 'recipe-gallery' : ''}">${item.images.map(image => `<img src="${image}" alt="${item.name}" loading="lazy">`).join('')}</div>`
-          : '<div class="recipe-art pending">Foto pendiente</div>';
+          : item.emoji
+            ? `<div class="recipe-art" aria-hidden="true">${item.emoji}</div>`
+            : '<div class="recipe-art pending">Foto pendiente</div>';
         const whatsappUrl = `https://wa.me/541132322710?text=${encodeURIComponent(`Hola, quisiera consultar el precio y hacer un pedido de ${item.name}.` )}`;
 
         return `
