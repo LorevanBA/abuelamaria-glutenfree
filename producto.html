@@ -142,7 +142,8 @@
     const newSearchButton = document.getElementById('newSearchButton');
 
     const availableSubcategories = [...new Set(recipes
-      .filter(item => !selectedCategory || item.category === selectedCategory)
+      .filter(item => (!selectedCategory || item.category === selectedCategory)
+        && !(selectedCategory === 'Tartas' && !selectedSubcategory && item.subcategory === 'Pasta Flora'))
       .map(item => item.subcategory))];
     subcategoryPicker.innerHTML = '<option value="">Todos los sabores</option>' + availableSubcategories
       .map(subcategory => `<option value="${subcategory}">${subcategory}</option>`)
